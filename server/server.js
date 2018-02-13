@@ -21,9 +21,10 @@ app.get('/', (req, res, next) => {
   res.sendFile(path.join(__dirname, '../client/login.html'));
 })
 
-// User login and signup routes
-// app.post('/login', userController.verifyUser);
-// app.post('/signup', userController.createUser);
+app.post('/login', userController.verifyUser);
+app.post('/signup', userController.createUser,
+userController.findId,
+userController.setCookie);
 
 // Question CRUD routes
 app.post('/addQ', questionController.createQuestion);
