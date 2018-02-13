@@ -18,10 +18,26 @@ userController.findId = (req, res, next) => {
   })
 }
 
-userController.setCookie = (req,res,next) => {
+userController.setCookie = (req, res, next) => {
   let cookieVal = res.locals.user_id;
   res.cookie('ssid', cookieVal, {httpOnly: true});
   next();
+}
+
+userController.verifyUser = (req, res, next) => {
+  res.locals.username = req.body.username;
+  res.locals.password = req.body.password;
+
+  User.findOne({ 'username' : res.locals.username }, (err, userObject) => {
+    if(!userObject) {
+      res.redirect('/signup');
+    }
+    if(res.locals.password === userObject.password){
+      res.redirect('/question')
+    } else {
+      res.redirect('/signup');
+    }
+  })
 }
 
 module.exports = userController
