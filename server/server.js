@@ -21,7 +21,11 @@ app.get('/', (req, res, next) => {
 
 app.post('/login', userController.verifyUser);
 
-app.post('/signup', userController.createUser);
+app.post('/signup', userController.createUser,
+userController.findId,
+userController.setCookie);
+
+
 
 
 
