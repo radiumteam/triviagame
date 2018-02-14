@@ -6,6 +6,7 @@ $(document).ready(() => {
     // const displayPromise = new Promise((resolve, reject) => {
       const questionContainer = $(`<div id=${triviaQuestion._id}>`).addClass('questionContainer');
       const questionHeader = $('<div>').addClass('questionHeader');
+      const categoryName = $(`<div class= "categoryName">${triviaQuestion.category}</div>`);
       const questionTitle = $('<div>').addClass('questionTitle').text(triviaQuestion.question);
       const questionButtons = $('<div class="buttonContainer"></div>');
       questionButtons.append('<button class="editButton">Edit</button>');
@@ -96,7 +97,7 @@ $(document).ready(() => {
       questionButtons.children('.cancelButton').hide();
 
       // Appending question title and question buttons (container) to the question header div
-      questionHeader.append(questionTitle, questionButtons);
+      questionHeader.append(categoryName, questionTitle, questionButtons);
 
       // Creates a container div for answer options
       const answerContainer = $('<div>').addClass('answerContainer');
@@ -112,7 +113,45 @@ $(document).ready(() => {
       $('#displayContainer').append(questionContainer);
   };
 
-  // When document is ready, get the user's questions from the database
+  // Display a single answer option input field when user is creating a question
+  const displayAnswerOptionInput = () => {
+    const answerLine = $('<li class="answerLine">');
+    answerLine.append('<input class="answerInputField" type="text">&nbsp;&nbsp;&nbsp;&nbsp;', 
+                      '<label><em>Correct Answer? </em><input type="radio" name="answerOption"></label>&nbsp;&nbsp;&nbsp;&nbsp;',
+                      '<button class="addOptionButton">Add</button>',
+                      '<button class="deleteOptionButton">Delete</button>'
+                    );
+    // Bind add and delete event handlers
+    // Add option handler
+    answerLine.children('.addOptionButton').click(event => {
+      const answerInputField = $(event.target).siblings('.answerInputField');
+      const answerInputText = answerInputField.val();
+      // 1) Remove input field, replace with saved text from input field 
+      answerInputField.remove();
+      const optionText = $(`<span class="answerOption">${answerInputText}</span>`);
+      $(event.target).parent().prepend(optionText);
+      // 2) Hide add button, show delete button
+      $(event.target).hide();
+      $(event.target).siblings('.deleteOptionButton').show();
+      displayAnswerOptionInput();
+    });
+    // Delete option handler
+    answerLine.children('.deleteOptionButton').click(event => {
+      $(event.target).parent().remove();
+    });
+
+    // Hide delete button on display
+    answerLine.children('.deleteOptionButton').hide();
+    
+    // Append new answer line to the ordered list of answer options
+    $('#createAnswerOptions').append(answerLine);
+  };
+
+  // -------END HELPER FUNCTIONS - MAIN FUNCTIONALITY BEGINS HERE-------------
+  // Populate the create questions container with first answer option
+  displayAnswerOptionInput();
+
+  // Get the user's questions from the database
   fetch('/getAllQ') // TODO: Change this to a POST request and add object with user's ID
   .then(res => res.json())
   .then(triviaQuestions => triviaQuestions.forEach(triviaQuestion => { 
