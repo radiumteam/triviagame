@@ -24,7 +24,7 @@ app.get('/signup', (req, res, next) => {
   res.sendFile(path.join(__dirname, '../client/signup.html'))
 })
 
-app.post('/login', userController.verifyUser, (req, res) => {
+app.post('/login', userController.verifyUser, userController.setCookie, (req, res) => {
   res.redirect('/question')
 });
 app.post('/signup',
@@ -41,7 +41,7 @@ app.get('/question', (req, res) => {
 
 // Question CRUD routes
 app.post('/addQ', questionController.createQuestion);
-app.post('/getUserQ', questionController.getUserQuestions);
+app.get('/getUserQ', questionController.getUserQuestions);
 app.post('/updateQText', questionController.updateQuestionText);
 app.post('/deleteQ', questionController.deleteQuestion);
 
