@@ -28,9 +28,13 @@ app.post('/signup',
   userController.createUser,
   userController.setCookie,
   (req, res) => {
-    console.log("helllloooo")
     res.redirect('/')
-  })
+});
+
+// Route to user's trivia questions page
+app.get('/question', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/question.html'));
+});
 
 // Question CRUD routes
 app.post('/addQ', questionController.createQuestion);
