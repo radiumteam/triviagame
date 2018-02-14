@@ -49,8 +49,8 @@ userController.setCookie = (req, res, next) => {
 userController.verifyUser = (req, res, next) => {
   res.locals.username = req.body.username;
   res.locals.password = req.body.password;
-  console.log(req.cookies.cookieVal, "cookie")
-  User.findOne({ 'username': res.locals.username }, (err, userObject) => {
+  res.locals.cookie = req.cookies.ssid;
+  User.findOne({ '_id': res.locals.cookie }, (err, userObject) => {
     if (res.locals.password === userObject.password && userObject) {
       next();
     } else {
