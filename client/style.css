@@ -64,5 +64,13 @@ h2 {
 }
 
 .questionTitle {
+  font-weight: 500;
+  text-transform: uppercase;
+  color: black;
+}
 
+.categoryName {
+  font-weight: 600;
+  text-transform: uppercase;
+  text-decoration: underline;
 }
