@@ -7,7 +7,7 @@ questionController.createQuestion = (req, res) => {
     author_id: req.body.author_id,
     question: req.body.question,
     answerOptions: req.body.answerOptions,
-    correctAnswerIndex: req.body.correctAnswerIndex,
+    correctAnswerIndex: req.body.correctAnswerIndex, // Make sure to hook up properly on front end
     category: req.body.category
   }, (err, createdQuestion) => {
     if (err) res.send(400, err);
@@ -37,6 +37,9 @@ questionController.updateQuestionText = (req, res) => {
 
 // Deletes a trivia question in the database
 questionController.deleteQuestion = (req, res) => {
+  console.log('Inside the delete question function in the server');
+  console.log('REQUEST BODY', req.body);
+  console.log('REQUEST:', req);
   Question.findByIdAndRemove(req.body._id, (err, deletedQuestion) => {
      if (err) res.send(400, err);
      res.send(deletedQuestion);

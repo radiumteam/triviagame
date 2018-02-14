@@ -21,10 +21,15 @@ app.get('/', (req, res, next) => {
   res.sendFile(path.join(__dirname, '../client/login.html'));
 })
 
-app.post('/login', userController.verifyUser);
+// app.post('/login', userController.verifyUser);
 app.post('/signup', userController.createUser,
 userController.findId,
 userController.setCookie);
+
+// Route to user's trivia questions page
+app.get('/question', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/question.html'));
+});
 
 // Question CRUD routes
 app.post('/addQ', questionController.createQuestion);
