@@ -1,4 +1,5 @@
 $(document).ready(() => {
+  console.log(document.cookie);
   // Helper function for displaying a user's trivia questions
   const displayQuestion = triviaQuestion => {
     // Creates a container div for question and edit/delete buttons
