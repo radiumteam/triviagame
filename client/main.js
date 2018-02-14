@@ -84,6 +84,10 @@ $(document).ready(() => {
         // Put question title back
         const questionTitle = $('<div>').addClass('questionTitle').text(inputFieldVal);
         $(event.target).parent().before(questionTitle);
+        $(event.target).hide();
+        $(event.target).siblings('.saveButton').hide();
+        $(event.target).siblings('.editButton').show();
+        $(event.target).siblings('.deleteButton').show();
       });
 
       // Hide save and cancel buttons when first displaying a trivia question
