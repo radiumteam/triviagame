@@ -103,8 +103,10 @@ $(document).ready(() => {
       const answerContainer = $('<div>').addClass('answerContainer');
       const answerList = $('<ol type="A">');
       answerContainer.append(answerList);
-      triviaQuestion.answerOptions.forEach(answer => {
-        answerList.append(`<li>${answer}</li>`);
+      triviaQuestion.answerOptions.forEach((answer, index) => {
+        const newAnswer = $(`<li>${answer}</li>`);
+        if (triviaQuestion.correctAnswerIndex === index) newAnswer.css('font-weight', 'bold');
+        answerList.append(newAnswer);
       });
 
        // Appends header and answers to question container 
@@ -116,8 +118,8 @@ $(document).ready(() => {
   // Display a single answer option input field when user is creating a question
   const displayAnswerOptionInput = () => {
     const answerLine = $('<li class="answerLine">');
-    answerLine.append('<input class="answerInputField" type="text">&nbsp;&nbsp;&nbsp;&nbsp;', 
-                      '<label><em>Correct Answer? </em><input type="radio" name="answerOption"></label>&nbsp;&nbsp;&nbsp;&nbsp;',
+    answerLine.append('<input class="answerInputField" type="text">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;', 
+                      '<label><input type="radio" name="answerOption"><em> Correct Answer</em></label>&nbsp;&nbsp;&nbsp;',
                       '<button class="addOptionButton">Add</button>',
                       '<button class="deleteOptionButton">Delete</button>'
                     );
@@ -150,6 +152,42 @@ $(document).ready(() => {
   // -------END HELPER FUNCTIONS - MAIN FUNCTIONALITY BEGINS HERE-------------
   // Populate the create questions container with first answer option
   displayAnswerOptionInput();
+  // Bind event handler to submit button in create questions container
+  $('#submitButton').click(event => {
+    // Populate a request body object with data for creating a new question in database
+    const answerOptions = [];
+    $('.answerOption').each(function() {
+      answerOptions.push($(this).text());
+    });
+   
+    const radioButtons = $('input[name="answerOption"]');
+    const correctAnswerIndex = radioButtons.index($('input:checked'));
+    console.log(radioButtons.length);
+    if (correctAnswerIndex === -1 || correctAnswerIndex >= radioButtons.length - 1) {
+      alert('Must indicate a correct answer first!');
+      return;
+    }
+    const requestBody = {
+      answerOptions,
+      correctAnswerIndex,
+      category: $('#categoryInput').val(),
+      question: $('#questionInput').val(),
+    };
+    console.log(requestBody);
+    // On back end, create a new question in database containing data from input fields
+    fetch('/addQ', {
+      method: 'POST',
+      headers: { 'Content-Type' : 'application/json' },
+      body: JSON.stringify(requestBody)
+    })
+    .then(res => res.json())
+    // On front end, the newly created question should appear on the DOM
+    .then(createdQuestion => displayQuestion(createdQuestion))
+    .then(() => {
+      // TODO: Clear out the input fields
+    })
+    .catch(err => console.error('Error:', err));
+  });
 
   // Get the user's questions from the database
   fetch('/getAllQ') // TODO: Change this to a POST request and add object with user's ID
