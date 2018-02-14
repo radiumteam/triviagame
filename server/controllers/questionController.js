@@ -12,7 +12,7 @@ questionController.createQuestion = (req, res) => {
   }, (err, createdQuestion) => {
     if (err) res.send(400, err);
     res.send(createdQuestion);
-  }); 
+  });
 };
 
 // Finds all trivia questions for a particular user in the database
@@ -26,12 +26,12 @@ questionController.getUserQuestions = (req, res) => {
 
 // Updates a trivia question in the database
 questionController.updateQuestionText = (req, res) => {
-  Question.findByIdAndUpdate(req.body._id, { 
+  Question.findByIdAndUpdate(req.body._id, {
     question: req.body.question
-   }, (err, updatedQuestion) => {
-     if (err) res.send(400, err);
-     res.send(updatedQuestion);
-   });
+  }, (err, updatedQuestion) => {
+    if (err) res.send(400, err);
+    res.send(updatedQuestion);
+  });
 };
 
 // TODO: Write function(s) to edit and/or delete answer options
@@ -42,9 +42,9 @@ questionController.deleteQuestion = (req, res) => {
   console.log('REQUEST BODY', req.body);
   console.log('REQUEST:', req);
   Question.findByIdAndRemove(req.body._id, (err, deletedQuestion) => {
-     if (err) res.send(400, err);
-     res.send(deletedQuestion);
-   });
+    if (err) res.send(400, err);
+    res.send(deletedQuestion);
+  });
 };
 
 // For testing: gets all trivia questions in the database
