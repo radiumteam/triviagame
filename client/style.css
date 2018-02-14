@@ -78,7 +78,7 @@ h2 {
   text-decoration: underline;
 }
 
-input[type=text]{
+input[type=text]:not(#user, #newuser) {
   background: transparent;
   border: 0.5px solid gray;
   width: 400px;
