@@ -23,8 +23,8 @@ app.get('/', (req, res, next) => {
 
 app.post('/login', userController.verifyUser);
 app.post('/signup', userController.createUser,
-userController.findId,
-userController.setCookie);
+userController.setCookie,
+(req, res) => res.send());
 
 // Question CRUD routes
 app.post('/addQ', questionController.createQuestion);
