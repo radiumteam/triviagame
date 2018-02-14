@@ -1,6 +1,6 @@
 
 
-$(document).ready(function() {
+$(document).ready(function () {
   // function open
   $('#goto-question-from-signup').click(() => {
     let user = $('#newuser').val();
@@ -8,23 +8,25 @@ $(document).ready(function() {
     console.log(user);
     console.log(pass);
     fetch('/signup', {
-      method : 'POST',
-      body :  JSON.stringify({ newUsername : user, newPassword : pass }),
+      method: 'POST',
+      body: JSON.stringify({ newUsername: user, newPassword: pass }),
       headers: new Headers({
-        'Content-Type' : 'application/json'
+        'Content-Type': 'application/json'
+      }),
+      credentials: "include"
+    })
+      .then(obj => {
+        if (obj.status === 200) {
+          console.log(obj);
+        } else {
+          console.log('ERROR');
+        }
       })
-    })
-    .then(obj => {
-      if(obj.status === 200){
-        console.log('YEAAHEEHHEH')
-      } else {
-        console.log('ERROR');
-      }
-    })
-    .then(() => {
-      window.location.replace('/')
-      // window.open(window.open('http://google.com');)
-    })
+      .then(() => {
+        // window.location.replace('/')
+
+      })
+      .catch(error => console.error('Error:', error));
 
   })
 })
