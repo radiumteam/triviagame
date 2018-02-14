@@ -1,4 +1,4 @@
-const Question = require('./models/questionModel');
+const Question = require('../models/questionModel');
 
 const questionController = {
   getQuestion(req, res) {
