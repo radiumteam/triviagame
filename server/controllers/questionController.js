@@ -17,7 +17,8 @@ questionController.createQuestion = (req, res) => {
 
 // Finds all trivia questions for a particular user in the database
 questionController.getUserQuestions = (req, res) => {
-  Question.find({ author_id: req.body.author_id }, (err, userQuestions) => {
+  console.log('REQUEST HAS COOKIE SSID', req.cookies.ssid);
+  Question.find({ author_id: req.cookies.ssid }, (err, userQuestions) => {
     if (err) res.send(400, err);
     res.send(userQuestions);
   });
@@ -54,9 +55,11 @@ questionController.getAllQuestions = (req, res) => {
   })
 };
 
-// Add question author experience
+// Add question author
 questionController.updateQuestionAuthor = (req, res) => {
-  Question.findByIdAndUpdate(req.body._id, (err, updatedQuestion) => {
+  Question.findByIdAndUpdate(req.body._id, { 
+    author_id: req.body.author_id
+   }, (err, updatedQuestion) => {
     if (err) res.send(400, err);
     res.send(updatedQuestion);
   });

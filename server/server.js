@@ -11,6 +11,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '../client'))); //serves all related files in this folder.
+app.use(express.static(path.join(__dirname, '../css')))
 
 const URI = 'mongodb://triviacrud:ilovetesting1@ds233228.mlab.com:33228/triviacrud';
 mongoose.connect(URI);
@@ -20,28 +21,32 @@ mongoose.connect(URI);
 app.get('/', (req, res, next) => {
   res.sendFile(path.join(__dirname, '../client/login.html'));
 })
+
 app.get('/signup', (req, res, next) => {
   res.sendFile(path.join(__dirname, '../client/signup.html'))
 })
+// app.get('/', (req, res, next) => {
+//   res.sendFile(path.join(__dirname, '../css'))
+// })
 
-app.post('/login', userController.verifyUser, (req, res) => {
+app.post('/login', userController.verifyUser, userController.setCookie, (req, res) => {
   res.redirect('/question')
 });
 app.post('/signup',
   userController.createUser,
-  userController.setCookie,
   (req, res) => {
     res.redirect('/')
   });
 
 // Route to user's trivia questions page
-app.get('/question', (req, res) => {
+//possibly add middleware that checks for a cookie for auth;
+app.get('/question', userController.isLoggedIn, (req, res) => {
   res.sendFile(path.join(__dirname, '../client/question.html'));
 });
 
 // Question CRUD routes
 app.post('/addQ', questionController.createQuestion);
-app.post('/getUserQ', questionController.getUserQuestions);
+app.get('/getUserQ', questionController.getUserQuestions);
 app.post('/updateQText', questionController.updateQuestionText);
 app.post('/deleteQ', questionController.deleteQuestion);
 
