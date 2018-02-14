@@ -20,16 +20,19 @@ mongoose.connect(URI);
 app.get('/', (req, res, next) => {
   res.sendFile(path.join(__dirname, '../client/login.html'));
 })
+app.get('/signup', (req, res, next) => {
+  res.sendFile(path.join(__dirname, '../client/signup.html'))
+})
 
 app.post('/login', userController.verifyUser, (req, res) => {
-  res.redirect("/question")
+  res.redirect('/question')
 });
 app.post('/signup',
   userController.createUser,
   userController.setCookie,
   (req, res) => {
     res.redirect('/')
-});
+  });
 
 // Route to user's trivia questions page
 app.get('/question', (req, res) => {
