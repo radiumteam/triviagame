@@ -40,6 +40,7 @@ h2 {
   width: 100%;
   flex: 1 1 auto;
   background-color: #feb236;
+  padding: 20px;
 }
 
 #displayContainer {
@@ -56,14 +57,54 @@ h2 {
   justify-content: center;
 }
 .questionHeader {
-  font-size: 
+  font-size: 1.2em;
   display: inline-flex;
   background-color: #ff7b25;
   color: white;
   width: 100%;
+  padding: 20px;
 }
 
 .questionTitle {
   font-weight: 500;
   text-transform: uppercase;
+  color: black;
+  padding: 20px;
+}
+
+.categoryName {
+  font-weight: 600;
+  text-transform: uppercase;
+  text-decoration: underline;
+}
+
+input[type=text]:not(#user, #newuser) {
+  background: transparent;
+  border: 0.5px solid gray;
+  width: 400px;
+  font-size: 1.2em;
+}
+
+label {
+  font-weight: 600;
+}
+
+button {
+  vertical-align: middle;
+  background-color: #d64161;
+  color: white;
+  border: 0;
+  border-radius: 5px;
+  padding: 9px 14px 9px 14px;
+  margin: 5px;
+  font-size: 0.8em;
+  font-weight: 200;
+}
+
+button:hover {
+	color:  darkgray;
+	background-color: white;
+  text-decoration: none;
+  cursor: pointer;
+  font-weight: 400;
 }
