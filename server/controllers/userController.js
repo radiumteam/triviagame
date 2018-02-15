@@ -74,7 +74,6 @@ userController.verifyUser = (req, res, next) => {
 }
 
 userController.isLoggedIn = (req, res, next) => {
-  console.log(req.cookies);
   if (!req.cookies.ssid) {
     res.redirect('/')
   }
