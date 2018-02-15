@@ -1,5 +1,4 @@
 $(document).ready(() => {
-  console.log(document.cookie);
   // Helper function for displaying a user's trivia questions
   const displayQuestion = triviaQuestion => {
     // Creates a container div for question and edit/delete buttons
@@ -22,7 +21,6 @@ $(document).ready(() => {
         // 1) Remove questionTitle, append inputText (input field)
         questionTitle.remove();
         const inputField = $(`<input type="text" value="${questionText}">`);
-        console.log($(event.target).parent());
         $(event.target).parent().before(inputField);
         // 2) Hide edit button, show save and cancel buttons
         $(event.target).hide();
@@ -167,16 +165,18 @@ $(document).ready(() => {
       alert('Must indicate a correct answer first!');
       return;
     }
+    // Generate request body for fetch
     const requestBody = {
       answerOptions,
       correctAnswerIndex,
       category: $('#categoryInput').val(),
-      question: $('#questionInput').val(),
+      question: $('#questionInput').val()
     };
-    console.log(requestBody);
+
     // On back end, create a new question in database containing data from input fields
     fetch('/addQ', {
       method: 'POST',
+      credentials: 'include',
       headers: { 'Content-Type' : 'application/json' },
       body: JSON.stringify(requestBody)
     })
@@ -184,13 +184,20 @@ $(document).ready(() => {
     // On front end, the newly created question should appear on the DOM
     .then(createdQuestion => displayQuestion(createdQuestion))
     .then(() => {
-      // TODO: Clear out the input fields
+      // Clear input fields
+      $('#categoryInput').val('');
+      $('#questionInput').val('');
+      $('#createAnswerOptions').empty();
+      displayAnswerOptionInput();
     })
     .catch(err => console.error('Error:', err));
   });
 
   // Get the user's questions from the database
-  fetch('/getAllQ') // TODO: Change this to a POST request and add object with user's ID
+  fetch('/getUserQ', {
+    method: 'GET',
+    credentials: 'include'
+  }) 
   .then(res => res.json())
   .then(triviaQuestions => triviaQuestions.forEach(triviaQuestion => { 
     displayQuestion(triviaQuestion);

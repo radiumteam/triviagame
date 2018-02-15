@@ -4,7 +4,7 @@ const questionController = {};
 // Creates a new trivia question in the database
 questionController.createQuestion = (req, res) => {
   Question.create({
-    author_id: req.body.author_id,
+    author_id: req.cookies.ssid,
     question: req.body.question,
     answerOptions: req.body.answerOptions,
     correctAnswerIndex: req.body.correctAnswerIndex, // Make sure to hook up properly on front end
@@ -17,7 +17,6 @@ questionController.createQuestion = (req, res) => {
 
 // Finds all trivia questions for a particular user in the database
 questionController.getUserQuestions = (req, res) => {
-  console.log('REQUEST HAS COOKIE SSID', req.cookies.ssid);
   Question.find({ author_id: req.cookies.ssid }, (err, userQuestions) => {
     if (err) res.send(400, err);
     res.send(userQuestions);
@@ -38,9 +37,6 @@ questionController.updateQuestionText = (req, res) => {
 
 // Deletes a trivia question in the database
 questionController.deleteQuestion = (req, res) => {
-  console.log('Inside the delete question function in the server');
-  console.log('REQUEST BODY', req.body);
-  console.log('REQUEST:', req);
   Question.findByIdAndRemove(req.body._id, (err, deletedQuestion) => {
     if (err) res.send(400, err);
     res.send(deletedQuestion);
